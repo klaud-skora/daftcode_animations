@@ -44,15 +44,15 @@
     // Missing in IE
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/name
 
-    Object.defineProperty( Function.prototype, 'name', {
+    // Object.defineProperty( Function.prototype, 'name', {
 
-      get: function () {
+    //   get: function () {
 
-        return this.toString().match( /^\s*function\s*([^\(\s]*)/ )[ 1 ];
+    //     return this.toString().match( /^\s*function\s*([^\(\s]*)/ )[ 1 ];
 
-      }
+    //   }
 
-    } );
+    // } );
 
   }
 
@@ -106,7 +106,7 @@
    */
 
   function EventDispatcher() {}
-
+  
   Object.assign( EventDispatcher.prototype, {
 
     addEventListener: function ( type, listener ) {

@@ -1,10 +1,10 @@
 import {visibleHeightAtZDepth, visibleWidthAtZDepth, lerp} from "../utils.js"
-import {nextSlide} from "../main.js"
+import {prevSlide, nextSlide} from "../main.js"
 
 const raycaster = new THREE.Raycaster()
 const objLoader = new THREE.OBJLoader()
-let arrowBox = null
-let arrowBoxRotation = 0
+let arrowBoxes = []
+let arrowBoxesRotation = [0,0]
 
 const scene = new THREE.Scene()
 const camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight)
@@ -21,7 +21,8 @@ objLoader.load(
       const screenBorderRight = visibleWidthAtZDepth(-10, camera) / 2
       const screenBottom = -visibleHeightAtZDepth(-10, camera) / 2
 
-      addCube(children[0], nextSlide, screenBorderRight - 1.5, screenBottom + 1)
+      addCube(children[0], prevSlide, screenBorderRight -6, screenBottom + 1)
+      addCube(children[0], nextSlide, screenBorderRight - 3, screenBottom + 1)
 
       animate()
     }
@@ -45,21 +46,25 @@ const addCube = (object, callbackFn, x, y) => {
   boundingBox.add(cubeMesh)
 
   boundingBox.callbackFn = callbackFn
-
-  arrowBox = boundingBox
+  
+  arrowBoxes.push(boundingBox);
   scene.add(boundingBox)
 }
 
 const animate = () => {
-  arrowBoxRotation = lerp(arrowBoxRotation, 0, .07)
-  arrowBox.rotation.set(THREE.Math.degToRad(arrowBoxRotation), 0, 0)
+  
+  arrowBoxes.forEach((arrowBox, index) => {
+    arrowBoxesRotation[index] = lerp(arrowBoxesRotation[index], 0, .072)
+    arrowBox.rotation.set(THREE.Math.degToRad(arrowBoxesRotation[index]), 0, 0)
+  });
 
   renderer.render(scene, camera)
   requestAnimationFrame(animate)
 }
 
-export const handleThreeAnimation = () => {
-  arrowBoxRotation = 360
+export const handleThreeAnimation = (index) => {
+  if (index == 0) arrowBoxesRotation  = [-360, 0]
+  if (index == 1) arrowBoxesRotation  = [0, 360] 
 }
 
 window.addEventListener('click', () => {
@@ -69,6 +74,6 @@ window.addEventListener('click', () => {
 
   raycaster.setFromCamera(mousePosition, camera)
 
-  const interesctedObjects = raycaster.intersectObjects([arrowBox])
+  const interesctedObjects = raycaster.intersectObjects(scene.children)
   interesctedObjects.length && interesctedObjects[0].object.callbackFn()
 })
