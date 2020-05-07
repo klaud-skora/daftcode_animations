@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "src --out-dir lib",
     "start": "nodemon index.js"
   },
   "author": "",
