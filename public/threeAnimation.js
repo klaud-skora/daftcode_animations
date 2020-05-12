@@ -16,12 +16,23 @@ renderer.render(scene, camera)
 document.body.append(renderer.domElement)
 
 objLoader.load(
-    'models/cube.obj',
+  'models/flippedCube.obj',
     ({children}) => {
       const screenBorderRight = visibleWidthAtZDepth(-10, camera) / 2
       const screenBottom = -visibleHeightAtZDepth(-10, camera) / 2
 
       addCube(children[0], prevSlide, screenBorderRight -6, screenBottom + 1)
+
+      animate()
+    }
+)
+
+objLoader.load(
+  'models/cube.obj',
+    ({children}) => {
+      const screenBorderRight = visibleWidthAtZDepth(-10, camera) / 2
+      const screenBottom = -visibleHeightAtZDepth(-10, camera) / 2
+
       addCube(children[0], nextSlide, screenBorderRight - 3, screenBottom + 1)
 
       animate()
