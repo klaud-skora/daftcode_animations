@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "src --out-dir lib",
+    "build": "webpack --mode production",
     "start": "nodemon index.js"
   },
   "author": "",
